@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 0;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-blue-artificial-intelligence-technology-ai-robot-banner-image_196890.jpg');
+            background-repeat:repeat-y;
+            background-size: cover;
+        }
+
+        #historyTable {
+            max-width: 1300px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.696);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Hide the overflow from the container */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            /*table-layout: fixed; /* Ensure that table layout is fixed */
+        }
+
+        tbody {
+            max-height: 600px; /* Set a maximum height for the tbody to enable scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+            display: block; /* Allow the tbody to have its own block formatting context */
+        }
+
+        th, td {
+            border: 1.5px solid #ffffff85;
+            padding: 12px;
+            text-align: left;
+            font-size: 18px;
+            color: black;
+        }
+
+        h2 {
+            text-align: center;
+            height: 50px;
+            font-size: 2.7em;
+            margin-bottom: 50px;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 
+                -1.15px -1.15px 0 #000,  
+                1.15px -1.15px 0 #000,
+                -1.15px 1.15px 0 #000,
+                1.15px 1.15px 0 #000;
+        }
+
+        th {
+            position: -webkit-sticky;
+            background-color: #0067f7da;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h2>Lịch sử dự đoán</h2>
+    <div id="historyTable">
+        <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Thời điểm</th>
+                    <th>Thông tin giao dịch</th>
+                    <th>Mô hình</th>
+                    <th>Kết quả dự đoán</th>
+                </tr>
+                
+                {% set total_predictions = predictions|count %}
+                {% for prediction in predictions|reverse %}
+                
+                <tr>
+                        <td>{{ total_predictions - prediction.id + 1}}</td>
+                        <td>{{ prediction.time.strftime('%Y-%m-%d %H:%M:%S') | to_local_time }}</td>
+                        <td>{{ prediction.features }}</td>
+                        <td>{{ prediction.model }}</td>
+                        <td>{{ prediction.result }}</td>
+                 </tr>   
+
+                {% endfor %}
+                
+        </table>
+    </div>
+
+    <script>
+        function convertToVNTime(utcTimeString) {
+            var utcTime = new Date(utcTimeString);
+            var vnTime = new Date(utcTime.getTime() + 7 * 60 * 60 * 1000);  // UTC+7 for Vietnam
+            return vnTime.toLocaleString();
+        }
+
+        Vue.filter('to_local_time', function (value) {
+            if (!value) return '';
+            return convertToVNTime(value);
+        });
+    </script>
+</body>
+</html>

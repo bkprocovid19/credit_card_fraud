@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Fraud Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+body {
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin: 0;
+    color: #343a40;
+    background-image: url('https://scontent.fhan15-1.fna.fbcdn.net/v/t1.15752-9/407314197_2040381479663580_1424860510200108469_n.png?_nc_cat=105&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeEfYs2yZk0-g_rrKYCS-Aakh4m4gWXCCkWHibiBZcIKRYj0Pu9JFoaR-mdxdHnyirAKcwRDk2cE7FFBJfuWjLQ_&_nc_ohc=EW_fJvaFSVYAX-j0uyL&_nc_ht=scontent.fhan15-1.fna&oh=03_AdQ_619upqXepAvfF2KjRYV868NMSjBtd7nUffiAgdTx2Q&oe=65AD3515');
+    background-repeat:repeat-y;
+    background-size: cover;
+}
+
+        #fraudForm {
+            max-width: 550px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.7em;
+            margin-bottom: 50px;
+            width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            font-weight: 600;
+    color: #ffffff; /* Màu chữ */
+    text-shadow: 
+    -2.15px -2.15px 0 #000,  
+    2.15px -2.15px 0 #000,
+    -1.15px 1.15px 0 #000,
+    1.15px 1.15px 0 #000; /* Điều chỉnh vị trí và màu để tạo hiệu ứng viền */
+
+
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+            color: #000000;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid green;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .hint {
+            font-size: 1em;
+            color: #000000;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+
+        button, .link {
+            background-color: #0067f7da;
+            color: #f6f3f3;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.3em;
+            margin: 0;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Work Sans', sans-serif;
+            display: inline-block;
+        }
+
+        button:hover, .link:hover {
+            background-color: #49b9ec9e;
+        }
+
+    #result, #error {
+    margin-top: 30px;
+    width: 370px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    background-color: #28a745; /* Màu xanh lá cây */
+    margin-top: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    font-size: 1.4em;
+    height: auto;
+        }
+
+    #error {
+    background-color: #f43a3ad4; /* Màu đỏ */
+    width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+
+           }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px; /* Increase padding for a larger appearance */
+            border: 1px solid green;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-control:focus {
+            outline: none; /* Remove focus outline */
+            border-color: #0067f7da; /* Change border color on focus */
+        }
+
+        select {
+            width: 100%;
+            padding: 15px; /* Increase padding for a larger appearance */
+            border: 1px solid #3498db; /* Change border color */
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.7);
+            appearance: none; /* Remove default arrow icon */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333"><path d="M7 10l5 5 5-5z" /></svg>'); /* Add custom arrow icon as SVG data */
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            cursor: pointer;
+            transition: border-color 0.3s ease; /* Add transition effect on border color */
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #0067f7da;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Dự đoán gian lận giao dịch thẻ tín dụng</h2>
+    <form id="fraudForm">
+
+        <div class="form-group">
+            <label for="data">Thông tin giao dịch:</label>
+            <input type="text" class="form-control" id="data" name="data" required>
+            <p class="hint">Các thông số của giao dịch cách nhau bởi các khoảng trắng</p>
+        </div>
+        <div class="form-group">
+            <label for="model">Mô hình lựa chọn:</label>
+            <!-- Thêm dropdown menu cho mô hình lựa chọn -->
+            <select class="form-control" id="model" name="model" required>
+                <option value="KNN">KNN</option>
+                <option value="SVM">SVM</option>
+                <option value="Decision Tree">Decision Tree</option>
+                <option value="Naive Bayes">Naive Bayes</option>
+            </select>
+        </div>
+        <div class="btn-container">
+            <button type="button" onclick="detectFraud()">Dự đoán gian lận</button>
+            <a href="/prediction_history" class="link" id="historyLink">Lịch sử dự đoán</a>
+        </div>
+    </form>
+    <p id="result"></p>
+    <p id="error"></p>
+    <script>
+        function detectFraud() {
+            var data = document.getElementById("data").value;
+            var model = document.getElementById("model").value;
+
+            // Kiểm tra trạng thái của form
+            if (!document.getElementById("fraudForm").checkValidity()) {
+                document.getElementById("result").innerText = "";
+                document.getElementById("error").innerText = "Cảnh báo: Nhập thiếu trường dữ liệu";
+                return;
+            }
+
+            var features = {
+                'data': data,
+                'model': model,
+            };
+
+            fetch('/detect_fraud_knn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: Object.entries(features).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerText = "Kết quả dự đoán: " + data.result;
+                    document.getElementById("error").innerText = "";
+                })
+                .catch(error => {
+                    document.getElementById("result").innerText = "";
+                    document.getElementById("error").innerText = "Cảnh báo: Nhập sai định dạng dữ liệu";
+                });
+        }
+    </script>
+</body>
+</html>
